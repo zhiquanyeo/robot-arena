@@ -3,6 +3,7 @@
 const GPIO = require('raspi-gpio');
 const I2C = require('raspi-i2c').I2C;
 const LightedHardwareButton = require('./lighted-hardware-button');
+const MatchClock = require('./match-clock');
 
 var button = new LightedHardwareButton({
 	buttonPin: 1,

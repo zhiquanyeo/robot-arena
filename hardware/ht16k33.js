@@ -79,4 +79,4 @@ class HT16K33 {
 }
 
 module.exports = HT16K33;
-});
+})();
