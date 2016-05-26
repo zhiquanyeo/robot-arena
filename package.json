@@ -1,0 +1,27 @@
+{
+  "name": "robot-arena",
+  "version": "1.0.0",
+  "description": "Control System for a Combat Robot Arena",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhiquanyeo/robot-arena.git"
+  },
+  "keywords": [
+    "combat",
+    "robot",
+    "arena"
+  ],
+  "author": "Zhiquan \"ZQ\" Yeo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhiquanyeo/robot-arena/issues"
+  },
+  "homepage": "https://github.com/zhiquanyeo/robot-arena#readme",
+  "devDependencies": {
+    "mockery": "^1.7.0"
+  }
+}
