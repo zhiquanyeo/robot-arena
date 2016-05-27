@@ -12,6 +12,8 @@ class HardwareButton extends EventEmitter {
 			throw new Error('Configuration object is required');
 		}
 
+		this.d_activeState = GPIO.HIGH;
+
 		if (config.buttonPin !== undefined) {
 			var pullResistor = GPIO.PULL_NONE;
 			if (config.buttonPullResistor !== undefined) {
@@ -27,7 +29,12 @@ class HardwareButton extends EventEmitter {
 			throw new Error('Button Pin is required');
 		}
 
-		this.d_currState = undefined;
+		if (config.buttonActiveState !== undefined) {
+			this.d_activeState = config.buttonActiveState;
+		}
+
+		// Get an initial state
+		this.d_currState = this.d_buttonHW.read();
 
 		this.on('newListener', function (event, listener) {
 			if (ALLOWED_EVENTS.indexOf(event) === -1) {
@@ -38,13 +45,17 @@ class HardwareButton extends EventEmitter {
 				this.d_statePoller = setInterval(function () {
 					var state = this.d_buttonHW.read();
 					if (state !== this.d_currState) {
-						this.emit('changed', state);
+						// The changed event represents whether the button is 
+						// pressed or released, not whether it's high or low
+						this.emit('changed', state === this.d_activeState);
 					}
-					if (this.d_currState === GPIO.LOW && state === GPIO.HIGH) {
-						this.emit('lowToHigh');
+					if (this.d_currState !== this.d_activeState && 
+						state === this.d_activeState) {
+						this.emit('pressed');
 					}
-					if (this.d_currState === GPIO.HIGH && state === GPIO.LOW) {
-						this.emit('highToLow');
+					if (this.d_currState === this.d_activeState && 
+						state !== this.d_activeState) {
+						this.emit('released');
 					}
 
 					this.d_currState = state;
@@ -64,7 +75,7 @@ class HardwareButton extends EventEmitter {
 		}.bind(this));
 	}
 
-	getValue() {
+	get value() {
 		this.d_currState = this.d_buttonHW.read();
 		return this.d_currState;
 	}

@@ -22,6 +22,18 @@ class MatchClock extends EventEmitter {
 			return;
 		}
 		this.d_displays[address] = new SevenSegmentDisplay(address, this.d_i2c, invert);
+		// Set up the clock and put in the colon
+		this.d_displays[address].begin();
+		this.d_displays[address].set_colon(true);
+	}
+
+	setTime(seconds) {
+		for (var dispAddr in this.d_displays) {
+			var display = this.d_displays[dispAddr];
+			display.clear();
+			display.print_number_str('300');
+			display.write_display();
+		}
 	}
 }
 

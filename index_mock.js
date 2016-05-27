@@ -3,6 +3,7 @@
 'use strict';
 const mockery = require('mockery');
 
+mockery.registerSubstitute('raspi', './mocks/raspi');
 mockery.registerSubstitute('raspi-gpio', './mocks/raspi-gpio');
 mockery.registerSubstitute('raspi-i2c', './mocks/raspi-i2c');
 mockery.registerAllowables(['./index.js', './hardware-button', './lighted-hardware-button', 'events']);
