@@ -224,4 +224,5 @@ class AdafruitSevenSegment extends HT16K33 {
 	}
 }
 
+module.exports = AdafruitSevenSegment;
 })();
