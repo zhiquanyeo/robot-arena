@@ -12,27 +12,27 @@ class HardwareButton extends EventEmitter {
 			throw new Error('Configuration object is required');
 		}
 
+		if (!config.button || config.button.pin === undefined) {
+			throw new Error('Button configuration required');
+		}
+
+		var buttonCfg = config.button;
+		var pullResistor = GPIO.PULL_NONE;
+
 		this.d_activeState = GPIO.HIGH;
-
-		if (config.buttonPin !== undefined) {
-			var pullResistor = GPIO.PULL_NONE;
-			if (config.buttonPullResistor !== undefined) {
-				pullResistor = config.buttonPullResistor;
-			}
-
-			this.d_buttonHW = new GPIO.DigitalInput({
-				pin: config.buttonPin,
-				pullResistor: pullResistor
-			});
-		}
-		else {
-			throw new Error('Button Pin is required');
+		if (buttonCfg.pullResistor !== undefined) {
+			pullResistor = buttonCfg.pullResistor;
 		}
 
-		if (config.buttonActiveState !== undefined) {
-			this.d_activeState = config.buttonActiveState;
+		if (buttonCfg.activeState !== undefined) {
+			this.d_activeState = buttonCfg.activeState;
 		}
 
+		this.d_buttonHW = new GPIO.DigitalInput({
+			pin: buttonCfg.pin,
+			pullResistor: pullResistor
+		});
+		
 		// Get an initial state
 		this.d_currState = this.d_buttonHW.read();
 
