@@ -2,6 +2,10 @@
 'use strict';
 const raspi = require('raspi');
 const Arena = require('./arena');
+const Express = require('express');
+const App = Express();
+const Server = require('http').createServer(App);
+const IO = require('socket.io')(Server);
 
 var arenaConfig = {
 	matchButton: {
@@ -53,6 +57,15 @@ raspi.init(function () {
 
 var arena = new Arena(arenaConfig);
 
+// Set up the web server
+App.use(Express.static(__dirname + '/bower_components'));
+App.get('/', function (req, res, next) {
+	res.sendFile(__dirname + '/index.html');
+})
+
+Server.listen(4200);
+
+// === END
 });
 
 })();
