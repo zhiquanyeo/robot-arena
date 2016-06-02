@@ -83,6 +83,7 @@ class Arena extends EventEmitter {
 			// When the button is pressed, we start the match
 			_arenaThis.d_matchButton.once('pressed', function () {
 				_arenaThis.d_matchButton.setLight(false);
+				_aremaThis.emit('matchStarted');
 				fsm.setMachineState(STATE_MATCH_IN_PROGRESS);
 
 				if (_arenaThis.d_matchTimerToken) {
@@ -105,6 +106,7 @@ class Arena extends EventEmitter {
 					else {
 						_arenaThis.d_matchClock.setTime(0);
 						clearInterval(_arenaThis.d_matchTimerToken);
+						_arenaThis.emit('matchEnded');
 						fsm.setMachineState(STATE_MATCH_END);
 					}
 				}, 10);
@@ -121,6 +123,7 @@ class Arena extends EventEmitter {
 					var _checkReadyFunc = function () {
 						psCount--;
 						if (psCount === 0) {
+							_arenaThis.emit('ready');
 							_actionThis.setMachineState(STATE_FULLY_READY);
 							_setArenaReady(_actionThis);
 						}
