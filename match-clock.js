@@ -28,10 +28,33 @@ class MatchClock extends EventEmitter {
 	}
 
 	setTime(seconds) {
+		// Convert to the form of MM:SS
+		var mins = Math.floor(seconds / 60);
+		var secs = seconds % 60;
+		
+		var timeStr;
+		if (mins < 0 || mins > 99 || secs < 0 || secs > 59) {
+			timeStr = '----';
+		}
+		else {
+			var minStr = (mins < 10 ? '0' : '') + mins.toString();
+			var secStr = (secs < 10 ? '0' : '') + secs.toString();
+			timeStr = minStr + secStr;
+		}
+		
 		for (var dispAddr in this.d_displays) {
 			var display = this.d_displays[dispAddr];
 			display.clear();
-			display.print_number_str('300');
+			display.print_number_str(timeStr);
+			display.write_display();
+		}
+	}
+	
+	reset() {
+		for (var dispAddr in this.d_displays) {
+			var display = this.d_displays[dispAddr];
+			display.clear();
+			display.print_number_str('----');
 			display.write_display();
 		}
 	}
