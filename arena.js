@@ -59,6 +59,9 @@ class Arena extends EventEmitter {
 				this.d_players[pId] = playerStation;
 			}
 		}
+        
+        this.d_matchClock.addPhysicalDisplay(0x70, false);
+        this.d_matchClock.setTime(0);
 
 		var _arenaThis = this;
 
